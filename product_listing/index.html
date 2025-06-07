@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Product Listing</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>Product Listing</h1>
+    <div class="filters">
+      <select id="categoryFilter">
+        <option value="all">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+        <option value="books">Books</option>
+      </select>
+
+      <select id="sortFilter">
+        <option value="default">Sort By</option>
+        <option value="price">Price (Low to High)</option>
+        <option value="rating">Rating (High to Low)</option>
+      </select>
+    </div>
+
+    <div class="products" id="productContainer">
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Smartphone", category: "electronics", price: 1280, rating: 4.9, image: "images/phone.jpg" },
+      { name: "Women T-Shirt", category: "clothing", price: 7.0, rating: 4.0, image: "images/tshirt.jpg" },
+      { name: "English Novels", category: "books", price: 25, rating: 4.8, image: "images/books.jpg" },
+      { name: "Laptop", category: "electronics", price: 850, rating: 4.7, image: "images/laptop.jpg" },
+      { name: "Women Jeans", category: "clothing", price: 10, rating: 4.2, image: "images/jeans.jpg" },
+      { name: "Ear Buds", category: "electronics", price: 25, rating: 4.7, image: "images/earbuds.jpg"},
+      { name: "Smart Watch", category: "electronics", price: 90, rating: 4.9, image: "images/smart watch.jpg"},
+      { name: "Printed Dress", category: "clothing", price: 8.5, rating: 4.6, image: "images/dress.jpg" },
+      { name: "Green Saree", category: "clothing", price: 50, rating: 4.3, image: "images/saree.jpg" },
+      { name: "Men's Shirt", category: "clothing", price: 22, rating: 4.4, image: "images/mens_shirt.jpg" },
+      { name: "Men's Jeans", category: "clothing", price: 35, rating: 4.7, image: "images/mens_jeans.jpg" },
+      { name: "400 Days", category: "books", price: 8.0, rating: 4.9, image: "images/400daysbook.jpg" },
+      { name: "One Day Life Will Change", category: "books", price: 10, rating: 4.8, image: "images/onedaybook.jpg" },
+      { name: "Harry Potter", category: "books", price: 55, rating: 4.8, image: "images/harrypotter.jpg" },
+    ];
+
+    const container = document.getElementById('productContainer');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const sortFilter = document.getElementById('sortFilter');
+
+    function displayProducts(productList) {
+      container.innerHTML = '';
+      productList.forEach(p => {
+        container.innerHTML += `
+          <div class="card">
+            <img src="${p.image}" alt="${p.name}">
+            <h3>${p.name}</h3>
+            <p>Category: ${p.category}</p>
+            <p>Price: $${p.price}</p>
+            <p>Rating: ⭐ ${p.rating}</p>
+          </div>`;
+      });
+    }
+
+    function applyFilters() {
+      let filtered = [...products];
+      const category = categoryFilter.value;
+      const sort = sortFilter.value;
+
+      if (category !== 'all') {
+        filtered = filtered.filter(p => p.category === category);
+      }
+
+      if (sort === 'price') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sort === 'rating') {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      displayProducts(filtered);
+    }
+
+    categoryFilter.addEventListener('change', applyFilters);
+    sortFilter.addEventListener('change', applyFilters);
+
+    window.onload = () => displayProducts(products);
+  </script>
+</body>
+</html>
